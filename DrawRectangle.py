@@ -3,12 +3,9 @@ from PySide6.QtWidgets import QGraphicsView, QGraphicsScene
 from Rectangle import Rectangle
 
 
-class RectangleSignalEmitter(QObject):
-    rectangle = Signal()
-
 
 class DrawRectangle(QGraphicsView):
-    def __init__(self, scene: QGraphicsScene, signalEmitter: RectangleSignalEmitter):
+    def __init__(self, scene: QGraphicsScene, signalEmitter):
         super().__init__(scene)
         self.currentRectangle = None
         self.rectangle_signal_emitter = signalEmitter
