@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
         self.scene = QGraphicsScene()
         grid = CartesianGrid(1200, 1000, 10)
         self.scene.addItem(grid)
-        self.rectangleSignalEmitter.connect_signal(self.createCheckbox)
+        self.rectangleSignalEmitter.connectSignalCreated(self.createCheckbox)
         self.view = DrawRectangle(self.scene)
 
         transformationHandler = TransformationHandler()

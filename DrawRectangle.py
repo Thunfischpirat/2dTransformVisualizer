@@ -16,7 +16,7 @@ class DrawRectangle(QGraphicsView):
             if not item or not isinstance(item, Rectangle):
                 startPoint = self.mapToScene(event.pos())
                 self.currentRectangle = Rectangle(startPoint)
-                self.rectangle_signal_emitter.emit_signal()
+                self.rectangle_signal_emitter.emit_signal("create")
                 self.scene().addItem(self.currentRectangle)
             else:
                 super().mousePressEvent(event)
