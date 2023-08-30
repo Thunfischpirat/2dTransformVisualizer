@@ -1,14 +1,14 @@
 from PySide6.QtCore import Qt, Signal, QObject
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene
 from Rectangle import Rectangle
-
+from RectangleSignalEmitter import RectangleSignalEmitter
 
 
 class DrawRectangle(QGraphicsView):
-    def __init__(self, scene: QGraphicsScene, signalEmitter):
+    def __init__(self, scene: QGraphicsScene):
         super().__init__(scene)
         self.currentRectangle = None
-        self.rectangle_signal_emitter = signalEmitter
+        self.rectangle_signal_emitter = RectangleSignalEmitter()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -16,7 +16,7 @@ class DrawRectangle(QGraphicsView):
             if not item or not isinstance(item, Rectangle):
                 startPoint = self.mapToScene(event.pos())
                 self.currentRectangle = Rectangle(startPoint)
-                self.rectangle_signal_emitter.rectangle.emit()
+                self.rectangle_signal_emitter.emit_signal()
                 self.scene().addItem(self.currentRectangle)
             else:
                 super().mousePressEvent(event)

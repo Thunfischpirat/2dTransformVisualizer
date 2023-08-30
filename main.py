@@ -10,11 +10,8 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QGraphicsScene,
 from CartesianGrid import CartesianGrid
 from DrawRectangle import DrawRectangle
 from RectangleList import RectangleList
+from RectangleSignalEmitter import RectangleSignalEmitter
 from TransformationHandler import TransformationHandler
-
-
-class RectangleSignalEmitter(QObject):
-    rectangle = Signal()
 
 
 class MainWindow(QMainWindow):
@@ -35,8 +32,8 @@ class MainWindow(QMainWindow):
         self.scene = QGraphicsScene()
         grid = CartesianGrid(1200, 1000, 10)
         self.scene.addItem(grid)
-        self.rectangleSignalEmitter.rectangle.connect(self.handleCheckbox)
-        self.view = DrawRectangle(self.scene, self.rectangleSignalEmitter)
+        self.rectangleSignalEmitter.connect_signal(self.createCheckbox)
+        self.view = DrawRectangle(self.scene)
 
         transformationHandler = TransformationHandler()
 
@@ -52,7 +49,7 @@ class MainWindow(QMainWindow):
         self.addDockWidget(Qt.LeftDockWidgetArea, self.dock)
         self.show()
 
-    def handleCheckbox(self):
+    def createCheckbox(self):
         self.rectangleCount += 1
         checkbox = QCheckBox(f"Rectangle {self.rectangleCount}")
         self.dock.sidebar_layout.addWidget(checkbox)

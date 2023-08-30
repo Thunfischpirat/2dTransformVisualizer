@@ -2,11 +2,14 @@ from PySide6.QtWidgets import QGraphicsRectItem, QMenu
 from PySide6.QtCore import QRectF, QPoint
 from PySide6.QtGui import QBrush, QColor, QAction
 
+from RectangleSignalEmitter import RectangleSignalEmitter
+
 
 class Rectangle(QGraphicsRectItem):
     def __init__(self, startPoint: QPoint):
         super().__init__(QRectF(startPoint.x(), startPoint.y(), 0, 0))
         self.startPoint = startPoint
+        self.signalEmitter = RectangleSignalEmitter()
         self.setBrush(QBrush(QColor(255, 0, 0, 127)))
         self.setFlag(QGraphicsRectItem.ItemIsSelectable, True)
 
