@@ -1,9 +1,7 @@
 import sys
 
-import numpy as np
-from PySide6.QtCore import Signal, QObject
 from PySide6.QtGui import QAction, Qt
-from PySide6.QtWidgets import (QApplication, QCheckBox, QGraphicsScene,
+from PySide6.QtWidgets import (QApplication, QGraphicsScene,
                                QMainWindow, QMenu, QVBoxLayout,
                                QWidget)
 
@@ -29,10 +27,14 @@ class MainWindow(QMainWindow):
         fileMenu.addAction(exitAction)
         menubar.addMenu(fileMenu)
 
+        self.dock = RectangleList()
+        self.addDockWidget(Qt.LeftDockWidgetArea, self.dock)
+
         self.scene = QGraphicsScene()
         grid = CartesianGrid(1200, 1000, 10)
         self.scene.addItem(grid)
-        self.rectangleSignalEmitter.connectSignalCreated(self.createCheckbox)
+        self.rectangleSignalEmitter.connectSignalCreated(self.dock.createCheckbox)
+        self.rectangleSignalEmitter.connectSignalDeleted(self.dock.deleteCheckbox)
         self.view = DrawRectangle(self.scene)
 
         transformationHandler = TransformationHandler()
@@ -45,15 +47,7 @@ class MainWindow(QMainWindow):
         container.setLayout(layout)
         self.setCentralWidget(container)
 
-        self.dock = RectangleList()
-        self.addDockWidget(Qt.LeftDockWidgetArea, self.dock)
         self.show()
-
-    def createCheckbox(self):
-        self.rectangleCount += 1
-        checkbox = QCheckBox(f"Rectangle {self.rectangleCount}")
-        self.dock.sidebar_layout.addWidget(checkbox)
-        self.dock.update()
 
 
 if __name__ == "__main__":

@@ -2,8 +2,8 @@ from PySide6.QtCore import QObject, Signal
 
 
 class SignalHolder(QObject):
-    rectangleCreated = Signal()
-    rectangleDeleted = Signal()
+    rectangleCreated = Signal(object)
+    rectangleDeleted = Signal(object)
 
 
 class RectangleSignalEmitter:
@@ -21,8 +21,8 @@ class RectangleSignalEmitter:
     def connectSignalDeleted(self, slot_function):
         self.signal_holder.rectangleDeleted.connect(slot_function)
 
-    def emit_signal(self, action: str):
-        if action == "create":
-            self.signal_holder.rectangleCreated.emit()
-        elif action == "delete":
-            self.signal_holder.rectangleDeleted.emit()
+    def emitSignal(self, action: str, rectangle=None):
+        if action == "created":
+            self.signal_holder.rectangleCreated.emit(rectangle)
+        elif action == "deleted":
+            self.signal_holder.rectangleDeleted.emit(rectangle)

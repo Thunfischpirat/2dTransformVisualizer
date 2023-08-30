@@ -47,6 +47,7 @@ class Rectangle(QGraphicsRectItem):
         self.disableMove()
 
     def delete(self):
+        self.signalEmitter.emitSignal("deleted", self)
         self.scene().removeItem(self)
 
 
