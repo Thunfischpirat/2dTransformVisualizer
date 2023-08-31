@@ -1,23 +1,35 @@
-from PySide6.QtWidgets import QGraphicsRectItem, QMenu
-from PySide6.QtCore import QRectF, QPoint
-from PySide6.QtGui import QBrush, QColor, QAction
+from PySide6.QtWidgets import QMenu, QGraphicsPolygonItem
+from PySide6.QtCore import QPoint
+from PySide6.QtGui import QBrush, QColor, QAction, QPolygonF
 
 from RectangleSignalEmitter import RectangleSignalEmitter
 
 
-class Rectangle(QGraphicsRectItem):
-    def __init__(self, startPoint: QPoint):
-        super().__init__(QRectF(startPoint.x(), startPoint.y(), 0, 0))
+class Rectangle(QGraphicsPolygonItem):
+    def __init__(
+        self,
+        startPoint: QPoint,
+        bottomLeft: QPoint,
+        bottomRight: QPoint,
+        topRight: QPoint,
+    ):
+        super().__init__(QPolygonF([startPoint, topRight, bottomRight, bottomLeft]))
         self.startPoint = startPoint
+        self.bottomLeft = bottomLeft
+        self.bottomRight = bottomRight
+        self.topRight = topRight
         self.signalEmitter = RectangleSignalEmitter()
         self.setBrush(QBrush(QColor(255, 0, 0, 127)))
-        self.setFlag(QGraphicsRectItem.ItemIsSelectable, True)
+        self.setFlag(QGraphicsPolygonItem.ItemIsSelectable, True)
 
     def resize(self, endPoint: QPoint):
         x1, y1 = self.startPoint.x(), self.startPoint.y()
-        x2, y2 = endPoint.x(), endPoint.y()
-        rect = QRectF(min(x1, x2), min(y1, y2), abs(x2 - x1), abs(y2 - y1))
-        self.setRect(rect)
+        self.startPoint = QPoint(min(x1, endPoint.x()), min(y1, endPoint.y()))
+        self.bottomLeft = QPoint(min(x1, endPoint.x()), max(y1, endPoint.y()))
+        self.bottomRight = QPoint(max(x1, endPoint.x()), max(y1, endPoint.y()))
+        self.topRight = QPoint(max(x1, endPoint.x()), min(y1, endPoint.y()))
+        rect = QPolygonF([self.startPoint, self.topRight, self.bottomRight, self.bottomLeft])
+        self.setPolygon(rect)
 
     def contextMenuEvent(self, event):
         contextMenu = QMenu()
@@ -30,11 +42,11 @@ class Rectangle(QGraphicsRectItem):
         contextMenu.exec(event.screenPos())
 
     def enableMove(self):
-        self.setFlag(QGraphicsRectItem.ItemIsMovable, True)
+        self.setFlag(QGraphicsPolygonItem.ItemIsMovable, True)
         self.setBrush(QBrush(QColor(0, 255, 0, 127)))
 
     def disableMove(self):
-        self.setFlag(QGraphicsRectItem.ItemIsMovable, False)
+        self.setFlag(QGraphicsPolygonItem.ItemIsMovable, False)
         self.setBrush(QBrush(QColor(255, 0, 0, 127)))
 
     def hoverEnterEvent(self, event):
@@ -49,5 +61,3 @@ class Rectangle(QGraphicsRectItem):
     def delete(self):
         self.signalEmitter.emitSignal("deleted", self)
         self.scene().removeItem(self)
-
-
