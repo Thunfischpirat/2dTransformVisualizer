@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
         self.rectangleSignalEmitter.connectSignalDeleted(self.dock.deleteCheckbox)
         self.view = DrawRectangle(self.scene)
 
-        transformationHandler = TransformationHandler()
+        transformationHandler = TransformationHandler(self.dock)
 
         layout = QVBoxLayout()
         layout.addWidget(self.view)

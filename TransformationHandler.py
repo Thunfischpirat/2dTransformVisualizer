@@ -1,4 +1,5 @@
 import numpy as np
+from PySide6.QtCore import QPointF
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QPushButton,
@@ -9,11 +10,14 @@ from PySide6.QtWidgets import (
     QGridLayout,
 )
 
+from RectangleList import RectangleList
+
 
 class TransformationHandler(QHBoxLayout):
-    def __init__(self):
+    def __init__(self, rectangleList: RectangleList):
         super().__init__()
         self.transformationMatrix = np.eye(3)
+        self.rectangleList = rectangleList
         for transformation in [
             "Translation",
             "Euclidean",
@@ -87,6 +91,7 @@ class TransformationHandler(QHBoxLayout):
 
         if dialog.exec():
             self.modifyTransformationMatrix(entries)
+            self.applyTransformation()
 
     def modifyTransformationMatrix(self, entries: dict):
         if entries["angle"] is not None:
@@ -105,3 +110,31 @@ class TransformationHandler(QHBoxLayout):
 
         for entry, i, j in entries["matrix"]:
             self.transformationMatrix[i, j] = float(entry.text())
+
+    def applyTransformation(self):
+        for rectangle in self.rectangleList.checkBoxes.keys():
+            checkbox = self.rectangleList.checkBoxes[rectangle]
+            if checkbox.isChecked():
+
+                startPoint = rectangle.startPoint
+                bottomLeft = rectangle.bottomLeft
+                bottomRight = rectangle.bottomRight
+                topRight = rectangle.topRight
+
+                vecStartPoint = np.array([startPoint.x(), startPoint.y(), 1])
+                vecBottomLeft = np.array([bottomLeft.x(), bottomLeft.y(), 1])
+                vecBottomRight = np.array([bottomRight.x(), bottomRight.y(), 1])
+                vecTopRight = np.array([topRight.x(), topRight.y(), 1])
+
+                vecStartPoint = np.dot(self.transformationMatrix, vecStartPoint)
+                vecBottomLeft = np.dot(self.transformationMatrix, vecBottomLeft)
+                vecBottomRight = np.dot(self.transformationMatrix, vecBottomRight)
+                vecTopRight = np.dot(self.transformationMatrix, vecTopRight)
+
+                startPoint = QPointF(vecStartPoint[0], vecStartPoint[1])
+                bottomLeft = QPointF(vecBottomLeft[0], vecBottomLeft[1])
+                bottomRight = QPointF(vecBottomRight[0], vecBottomRight[1])
+                topRight = QPointF(vecTopRight[0], vecTopRight[1])
+
+                rectangle.updateRect(startPoint, topRight, bottomRight, bottomLeft)
+                self.transformationMatrix = np.eye(3)
