@@ -10,10 +10,14 @@ from PySide6.QtWidgets import (
     QGridLayout,
 )
 
-from RectangleList import RectangleList
+from Rectangle.RectangleList import RectangleList
 
 
 class TransformationHandler(QHBoxLayout):
+    """
+    A layout that contains buttons for different transformations and
+    handles the transformation of the selected rectangles.
+    """
     def __init__(self, rectangleList: RectangleList):
         super().__init__()
         self.transformationMatrix = np.eye(3)

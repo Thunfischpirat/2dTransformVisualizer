@@ -3,6 +3,12 @@ from PySide6.QtWidgets import QDockWidget, QVBoxLayout, QWidget, QCheckBox, QSpa
 
 
 class RectangleList(QDockWidget):
+    """
+    This class is responsible for the sidebar on the left side of the application.
+    It contains a list of all rectangles that have been created so far. Each rectangle
+    has a checkbox next to it, which can be used to select the rectangle. The sidebar
+    is updated whenever a new rectangle is created or deleted.
+    """
     def __init__(self):
         super().__init__("Rectangles")
         self.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)

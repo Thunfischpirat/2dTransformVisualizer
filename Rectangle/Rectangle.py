@@ -1,10 +1,11 @@
 from PySide6.QtCore import QPointF
 from PySide6.QtGui import QAction, QBrush, QColor, QPolygonF
 from PySide6.QtWidgets import QGraphicsPolygonItem, QMenu
-from RectangleSignalEmitter import RectangleSignalEmitter
+from Rectangle.RectangleSignalEmitter import RectangleSignalEmitter
 
 
 class Rectangle(QGraphicsPolygonItem):
+    """A rectangle that can be drawn on the scene."""
     def __init__(
         self,
         startPoint: QPointF,

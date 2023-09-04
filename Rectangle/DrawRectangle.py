@@ -1,10 +1,13 @@
 from PySide6.QtCore import Qt, QPoint
 from PySide6.QtWidgets import QGraphicsView, QGraphicsScene
-from Rectangle import Rectangle
-from RectangleSignalEmitter import RectangleSignalEmitter
+from Rectangle.Rectangle import Rectangle
+from Rectangle.Rectangle import RectangleSignalEmitter
 
 
 class DrawRectangle(QGraphicsView):
+    """
+    This class is responsible for drawing rectangles on the scene.
+    """
     def __init__(self, scene: QGraphicsScene):
         super().__init__(scene)
         self.currentRectangle = None

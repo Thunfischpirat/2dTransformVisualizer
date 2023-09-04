@@ -5,11 +5,11 @@ from PySide6.QtWidgets import (QApplication, QGraphicsScene,
                                QMainWindow, QMenu, QVBoxLayout,
                                QWidget)
 
-from CartesianGrid import CartesianGrid
-from DrawRectangle import DrawRectangle
-from RectangleList import RectangleList
-from RectangleSignalEmitter import RectangleSignalEmitter
-from TransformationHandler import TransformationHandler
+from Utils.CartesianGrid import CartesianGrid
+from Rectangle.DrawRectangle import DrawRectangle
+from Rectangle.RectangleList import RectangleList
+from Rectangle.RectangleSignalEmitter import RectangleSignalEmitter
+from Utils.TransformationHandler import TransformationHandler
 
 
 class MainWindow(QMainWindow):

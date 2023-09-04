@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt, QRectF
 
 
 class CartesianGrid(QGraphicsItem):
+    """Draws a Cartesian grid on the scene"""
     def __init__(self, width, height, cellSize):
         super().__init__()
         self.width = width
