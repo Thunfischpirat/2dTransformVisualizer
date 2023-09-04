@@ -73,7 +73,7 @@ class TransformationHandler(QHBoxLayout):
         for i in range(3):
             for j in range(3):
                 if (i in iVals) and (j in jVals):
-                    entry = QLineEdit()
+                    entry = QLineEdit("0")
                     entries["matrix"].append((entry, i, j))
                     gridLayout.addWidget(entry, i, j)
                 else:
@@ -131,10 +131,10 @@ class TransformationHandler(QHBoxLayout):
                 vecBottomRight = np.dot(self.transformationMatrix, vecBottomRight)
                 vecTopRight = np.dot(self.transformationMatrix, vecTopRight)
 
-                startPoint = QPointF(vecStartPoint[0], vecStartPoint[1])
-                bottomLeft = QPointF(vecBottomLeft[0], vecBottomLeft[1])
-                bottomRight = QPointF(vecBottomRight[0], vecBottomRight[1])
-                topRight = QPointF(vecTopRight[0], vecTopRight[1])
+                startPoint = QPointF(vecStartPoint[0], vecStartPoint[1]) / vecStartPoint[2]
+                bottomLeft = QPointF(vecBottomLeft[0], vecBottomLeft[1]) / vecBottomLeft[2]
+                bottomRight = QPointF(vecBottomRight[0], vecBottomRight[1]) / vecBottomRight[2]
+                topRight = QPointF(vecTopRight[0], vecTopRight[1]) / vecTopRight[2]
 
                 rectangle.updateRect(startPoint, topRight, bottomRight, bottomLeft)
                 self.transformationMatrix = np.eye(3)
