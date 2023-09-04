@@ -137,4 +137,4 @@ class TransformationHandler(QHBoxLayout):
                 topRight = QPointF(vecTopRight[0], vecTopRight[1]) / vecTopRight[2]
 
                 rectangle.updateRect(startPoint, topRight, bottomRight, bottomLeft)
-                self.transformationMatrix = np.eye(3)
+        self.transformationMatrix = np.eye(3)
